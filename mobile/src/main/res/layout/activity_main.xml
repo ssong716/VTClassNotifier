@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="VT Schedule Notifier"
         android:textSize="32dp"
-        android:typeface="monospace"
+        android:typeface="sans"
         android:textStyle="bold"
         android:layout_marginTop="60dp"
         android:layout_alignParentTop="true"
@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="CRN:"
         android:textSize="30dp"
+        android:typeface="sans"
         android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/titleText"
         android:layout_alignStart="@+id/titleText"
@@ -40,9 +41,11 @@
         android:width="90dp"
         android:inputType="number"
         android:textSize="25dp"
+        android:typeface="serif"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
     <Button
         android:id="@+id/submitButton"

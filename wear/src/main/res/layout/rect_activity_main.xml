@@ -7,9 +7,43 @@
     tools:context="cs3714.finalproject.vtclassnotifier.MainActivity"
     tools:deviceIds="wear_square">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_square" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VT Schedule Notifier"
+            android:textSize="15dp"
+            android:typeface="sans"
+            android:textStyle="bold"
+            android:layout_marginTop="33dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/classView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CS 3114"
+            android:typeface="serif"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/availableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IS NOW AVAILABLE"
+            android:typeface="sans"
+            android:layout_below="@+id/classView"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
 </LinearLayout>
