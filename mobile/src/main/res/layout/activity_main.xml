@@ -10,52 +10,84 @@
     tools:context="cs3714.finalproject.vtclassnotifier.MainActivity">
 
 
+
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="VT Schedule Notifier"
-        android:textSize="32dp"
+        android:textSize="25dp"
         android:typeface="sans"
         android:textStyle="bold"
         android:layout_marginTop="60dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/crnText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CRN:"
-        android:textSize="30dp"
-        android:typeface="sans"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/titleText"
-        android:layout_alignStart="@+id/titleText"
-        android:textStyle="normal"/>
-
-    <EditText
-        android:id="@+id/crnNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:width="90dp"
-        android:inputType="number"
-        android:textSize="25dp"
-        android:typeface="serif"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
         />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/crnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CRN:"
+                android:textSize="30dp"
+                android:typeface="sans"
+                android:textStyle="normal"
+                android:layout_alignBottom="@+id/crnNumber"
+                android:layout_toLeftOf="@+id/crnNumber"
+                android:layout_toStartOf="@+id/crnNumber" />
+
+            <EditText
+                android:id="@+id/crnNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="90dp"
+                android:inputType="number"
+                android:textSize="25dp"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:layout_below="@+id/titleText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp" />
+
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SUBMIT"
+                android:textSize="20dp"
+                android:layout_below="@+id/crnText"
+                android:layout_centerHorizontal="true" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SUBMIT"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="53dp"
-        android:textSize="30dp"/>
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cart"
+            android:text="Class \nCart"
+            android:layout_weight="1" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/searchClasses"
+            android:text="Search Classes"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/options"
+            android:text="Options"
+            android:layout_weight="1"
+        />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
