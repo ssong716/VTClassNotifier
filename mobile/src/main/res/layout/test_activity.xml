@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
 
     tools:context="cs3714.finalproject.vtclassnotifier.TestActivity">
+    <!--<WebView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/webview"-->
+        <!--android:scrollbars="vertical"/>-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/textview"
-        android:scrollbars="vertical"/>
+        android:text="Sample"/>
 
 </LinearLayout>
