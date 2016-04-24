@@ -30,9 +30,10 @@ public class HttpRequestHandler {
     private final String ACCEPT_LANGUAGE = "en-US,en;q=0.8,ko;q=0.6";
     private final String COOKIES_HEADER = "Set-Cookie";
     private List<String> cookies;
+    private String cookie;
 
     //URLs to make requests to
-    String timeTableUrl = "https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest";
+    String timeTableUrl = "https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_ProcRequest";
     String canvasUrl = "https://canvas.vt.edu";
 
     //You need to fill out your own username and password.
@@ -40,14 +41,14 @@ public class HttpRequestHandler {
     private String username = "";
     private String formDataParam = "j_username=" + username +"&j_password=" + password + "&_eventId_proceed=";
     //These are the parameters to look for classes.
-    int campus = 0;
-    int termyear = 201609;
-    String subject = "CS";
-    String courseNum = "";
-    String crn = "";
-    //Complete the request paremeters from the fields above
-    String courseRequest = "CAMPUS=" + campus + "&TERMYEAR=" + termyear + "&CORE_CODE=AR%25&subj_code="
-            + subject + "&SCHDTYPE=%25&CRSE_NUMBER=" + courseNum + "&crn=" + crn + "&open_only=&disp_comments_in=Y&BTN_PRESSED=FIND+class+sections&inst_name=";
+//    int campus = 0;
+//    int termyear = 201609;
+//    String subject = "PHYS";
+//    String courseNum = "2345";
+//    String crn = "";
+//    //Complete the request paremeters from the fields above
+//    String courseRequest = "CAMPUS=" + campus + "&TERMYEAR=" + termyear + "&CORE_CODE=AR%25&subj_code="
+//            + subject + "&SCHDTYPE=%25&CRSE_NUMBER=" + courseNum + "&crn=" + crn + "&open_only=&disp_comments_in=Y&BTN_PRESSED=FIND+class+sections&inst_name=";
 
     private String currUrl;
     String response;
@@ -58,6 +59,11 @@ public class HttpRequestHandler {
 
         }
         return null;
+    }
+
+    public void setCookie(String c)
+    {
+        cookie = c;
     }
     public void useJsoup() {
         Document doc = Jsoup.parse(response);
@@ -72,8 +78,7 @@ public class HttpRequestHandler {
      * Submit   :   input name=BTN_PRESSED
      */
     // HTTP POST request
-    public void sendPostForClasses() throws Exception {
-
+    public void sendPostForClasses(Query query) throws Exception {
         String url = timeTableUrl;
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -83,9 +88,10 @@ public class HttpRequestHandler {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", ACCEPT_LANGUAGE);
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setRequestProperty("Cookie", cookie);
 
 //        String urlParameters = "CAMPUS=0&TERMYEAR=201609&CORE_CODE=AR%25&subj_code=CS&SCHDTYPE=%25&CRSE_NUMBER=&crn=&open_only=&disp_comments_in=Y&BTN_PRESSED=FIND+class+sections&inst_name=";
-        String urlParameters = courseRequest;
+        String urlParameters = query.queryString();
         // Send post request
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
