@@ -37,6 +37,8 @@ public class TestActivity extends AppCompatActivity {
     WebView webView;
     String url;
     WebHelper webHelper;
+    HttpRequestHandler requestHandler;
+    HTMLGetter htmlGetter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,8 @@ public class TestActivity extends AppCompatActivity {
         url = "https://banweb.banner.vt.edu/ssomanager_prod/c/SSB";
         webView.loadUrl(url);
         setContentView(webView);
+        requestHandler = new HttpRequestHandler();
+        htmlGetter = new HTMLGetter();
 //        text = (TextView) findViewById(R.id.textview);
 //        if(text != null) {
 //            text.setText("Sample");
@@ -67,6 +71,20 @@ public class TestActivity extends AppCompatActivity {
         text.setMovementMethod(new ScrollingMovementMethod());
         text.setText(cookies);
 
+        requestHandler.setCookie(cookies);
+        htmlGetter.execute(cookies);
+
+//        try {
+//            requestHandler.setCookie(cookies);
+//            requestHandler.sendPostForClasses();
+//        }
+//        catch (Exception e)
+//        {
+//            text.setText("Exception caught from request handler\n" + e.toString());
+//            return;
+//        }
+//        text.setText(cookies+"\nResponse\n" + requestHandler.response);
+
     }
 
     public void setText(String s)
@@ -84,13 +102,21 @@ public class TestActivity extends AppCompatActivity {
 //        private String LOGIN_URL = "https://login.vt.edu";
         @Override
         protected String doInBackground(String... params) {
-
-            return "";
+            try {
+                requestHandler.sendPostForClasses();
+            }
+            catch (Exception e)
+            {
+                return "Exception caught: " + e.toString();
+            }
+            return requestHandler.response;
         }
 
         @Override
         protected void onPostExecute(String s) {
             setText(s);
+            HtmlParser parser = new HtmlParser();
+            setText(parser.parseTable(s));
             super.onPostExecute(s);
         }
 

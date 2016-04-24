@@ -30,9 +30,10 @@ public class HttpRequestHandler {
     private final String ACCEPT_LANGUAGE = "en-US,en;q=0.8,ko;q=0.6";
     private final String COOKIES_HEADER = "Set-Cookie";
     private List<String> cookies;
+    private String cookie;
 
     //URLs to make requests to
-    String timeTableUrl = "https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest";
+    String timeTableUrl = "https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_ProcRequest";
     String canvasUrl = "https://canvas.vt.edu";
 
     //You need to fill out your own username and password.
@@ -43,7 +44,7 @@ public class HttpRequestHandler {
     int campus = 0;
     int termyear = 201609;
     String subject = "CS";
-    String courseNum = "";
+    String courseNum = "2104";
     String crn = "";
     //Complete the request paremeters from the fields above
     String courseRequest = "CAMPUS=" + campus + "&TERMYEAR=" + termyear + "&CORE_CODE=AR%25&subj_code="
@@ -59,6 +60,11 @@ public class HttpRequestHandler {
         }
         return null;
     }
+
+    public void setCookie(String c)
+    {
+        cookie = c;
+    }
     public void useJsoup() {
         Document doc = Jsoup.parse(response);
         System.out.println(doc.html());
@@ -73,7 +79,6 @@ public class HttpRequestHandler {
      */
     // HTTP POST request
     public void sendPostForClasses() throws Exception {
-
         String url = timeTableUrl;
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -83,6 +88,7 @@ public class HttpRequestHandler {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", ACCEPT_LANGUAGE);
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setRequestProperty("Cookie", cookie);
 
 //        String urlParameters = "CAMPUS=0&TERMYEAR=201609&CORE_CODE=AR%25&subj_code=CS&SCHDTYPE=%25&CRSE_NUMBER=&crn=&open_only=&disp_comments_in=Y&BTN_PRESSED=FIND+class+sections&inst_name=";
         String urlParameters = courseRequest;

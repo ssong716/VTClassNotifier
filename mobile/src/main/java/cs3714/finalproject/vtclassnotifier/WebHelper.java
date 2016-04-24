@@ -20,13 +20,15 @@ public class WebHelper extends WebViewClient {
         super.onPageFinished(view, url);
         if(url.contains("https://banweb.banner.vt.edu/ssb/prod/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu"))
         {
-            String cookies = CookieManager.getInstance().getCookie(url);
-            testActivity.setCookie(cookies);
-//            view.loadUrl("https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest");
+            view.loadUrl("https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest");
+//            String cookies = CookieManager.getInstance().getCookie(url);
+//            testActivity.setCookie(cookies);
 
         }
         else if( url.contains("https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest"))
         {
+            String cookies = CookieManager.getInstance().getCookie(url);
+            testActivity.setCookie(cookies);
 //            view.loadUrl("javascript:window.HTMLOUT.showHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 //            view.loadUrl("javascript: document.getElementsByName(\"CRSE_NUMBER\")[0].value = 2104;");
 

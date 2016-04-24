@@ -30,11 +30,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
-<<<<<<< HEAD
-    //    compile 'com.google.android.gms:play-services:8.4.0'
-    compile files('src/main/java/libs/jsoup-1.9.1.jar')
-=======
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'org.jsoup:jsoup:1.9.1'
->>>>>>> origin/master
 }
