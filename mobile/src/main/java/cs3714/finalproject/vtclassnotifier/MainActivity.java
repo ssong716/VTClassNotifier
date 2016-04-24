@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    EditText crn;
     Button submit;
     Button classCart;
     Button searchClasses;
-    Button options;
 
 
     @Override
@@ -21,11 +22,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         submit = (Button) findViewById(R.id.submitButton);
         classCart = (Button) findViewById(R.id.cart);
         searchClasses = (Button) findViewById(R.id.searchClasses);
-        options = (Button) findViewById(R.id.options);
         submit.setOnClickListener(this);
         classCart.setOnClickListener(this);
         searchClasses.setOnClickListener(this);
-        options.setOnClickListener(this);
+        crn = (EditText) findViewById(R.id.crnNumber);
 
 
 
@@ -35,13 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == submit.getId()) {
 
+
         } else if (v.getId() == classCart.getId()) {
+            Intent classCart = new Intent(this, ClassCartActivity.class);
+            startActivity(classCart);
 
         } else if (v.getId() == searchClasses.getId()) {
             Intent searchClass = new Intent(this, SearchClasses.class);
             startActivity(searchClass);
-
-        } else if (v.getId() == options.getId()) {
 
         }
 

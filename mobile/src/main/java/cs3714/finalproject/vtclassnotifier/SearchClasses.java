@@ -9,12 +9,12 @@ import android.widget.Spinner;
 
 public class SearchClasses extends AppCompatActivity {
 
+    Spinner spinnerTerm;
     Spinner spinnerSubj;
-    Spinner spinnerClass;
     Button search;
     ListView results;
     String[] subjectArray;
-    String [] classArray;
+    String [] termArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +22,18 @@ public class SearchClasses extends AppCompatActivity {
         setContentView(R.layout.activity_search_classes);
 
         spinnerSubj = (Spinner) findViewById(R.id.spinnerSubjects);
-        spinnerClass = (Spinner) findViewById(R.id.spinnerClasses);
+        spinnerTerm = (Spinner) findViewById(R.id.spinnerTerm);
         search = (Button) findViewById(R.id.sendQuery);
         results = (ListView) findViewById(R.id.results);
+
+
+        termArray = new String[]{
+                "Summer I 2016",
+                "Summer II 2016",
+                "Fall 2016",
+                "Winter 2016",
+                "Spring 2017"
+        };
 
         subjectArray = new String[]{
                 "Computer Science",
@@ -34,21 +43,15 @@ public class SearchClasses extends AppCompatActivity {
                 "Test3"
         };
 
-        classArray = new String[]{
-                "2114",
-                "2505",
-                "3114",
-                "3714",
-                "3724"
-        };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, subjectArray);
         spinnerSubj.setAdapter(adapter);
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, classArray);
-        spinnerClass.setAdapter(adapter2);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, termArray);
+        spinnerTerm.setAdapter(adapter3);
 
     }
 }

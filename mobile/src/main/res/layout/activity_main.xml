@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/cart"
-            android:text="Class \nCart"
+            android:text="Class Cart"
             android:layout_weight="1" />
         <Button
             android:layout_width="match_parent"
@@ -79,13 +79,6 @@
             android:text="Search Classes"
             android:layout_weight="1"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/options"
-            android:text="Options"
-            android:layout_weight="1"
-        />
 
     </LinearLayout>
 
