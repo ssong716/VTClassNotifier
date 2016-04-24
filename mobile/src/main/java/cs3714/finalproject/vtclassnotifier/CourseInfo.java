@@ -10,14 +10,54 @@ public class CourseInfo {
     int crn, courseNumber, creditHours, openSeats, capacity;
     String department, title, instructor, days, times, location;
     ClassType classType;
+    boolean hasAdditionalTime = false;
     String addDays, addTimes, addLocation;
 
     public CourseInfo(ArrayList<String> arrayList)
     {
         if(arrayList.size() == 13)
         {
-
+            crn = Integer.parseInt(arrayList.get(0).substring(0, arrayList.get(0).length() - 1));
+            String [] temp = arrayList.get(1).trim().split("-");
+            if(temp.length == 2)
+            {
+                department = temp[0];
+                courseNumber = Integer.parseInt(temp[1]);
+            }
+            title = arrayList.get(2);
+            classType = ClassType.toEnum(arrayList.get(3).trim());
+            creditHours = Integer.parseInt(arrayList.get(4).trim());
+            if(arrayList.get(5).contains("Full"))
+            {
+                openSeats = Integer.parseInt(arrayList.get(5).trim().replace("Full ", ""));
+            }
+            else
+            {
+                openSeats = Integer.parseInt(arrayList.get(5).trim());
+            }
+            capacity = Integer.parseInt(arrayList.get(6).trim());
+            instructor = arrayList.get(7).trim();
+            days = arrayList.get(8).trim();
+            times = arrayList.get(9).trim() + " - " + arrayList.get(10).trim();
+            location = arrayList.get(11).trim();
         }
+    }
+    public void addTimes(String aDays, String bTime, String eTime, String aLocation)
+    {
+        hasAdditionalTime = true;
+        addDays = aDays;
+        addTimes = bTime + " - " + eTime;
+        addLocation = aLocation;
+
+    }
+    public String toString()
+    {
+        String str = crn + " | " + department + courseNumber + " | " + title + " | " + classType.toString() + " | " + creditHours+ " | " + openSeats+ " | " + capacity+ " | " + instructor+ " | " +days + " | " + times+ " | " +location;
+        if(hasAdditionalTime)
+        {
+            str += "\nAdditional Times: " + addDays + " | " + addTimes + " | " + addLocation;
+        }
+        return str;
     }
 
     public int getCrn() {

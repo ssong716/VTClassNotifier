@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * Created by AJ on 4/19/2016.
@@ -103,7 +104,9 @@ public class TestActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                requestHandler.sendPostForClasses();
+                Query query = new Query();
+
+                requestHandler.sendPostForClasses(query);
             }
             catch (Exception e)
             {
@@ -116,8 +119,20 @@ public class TestActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             setText(s);
             HtmlParser parser = new HtmlParser();
-            setText(parser.parseTable(s));
-            super.onPostExecute(s);
+            try {
+                HashMap<Integer, CourseInfo> hashMap = parser.parseTable(s);
+                String str = "";
+                for (CourseInfo c : hashMap.values())
+                {
+                    str += c.toString() + "\n\n";
+                }
+                setText(str);
+            }
+            catch(Exception e)
+            {
+                setText(e.getMessage());
+                super.onPostExecute(s);
+            }
         }
 
 
