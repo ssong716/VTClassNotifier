@@ -44,7 +44,7 @@ public class MyService extends Service {
     private void notifyMe() {
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.o_bit)
+                        .setSmallIcon(R.drawable.ic_cast_dark)
                         .setContentTitle("VTClassNotifier")
                         .setContentText("Class **** is now open!");
         // Creates an explicit intent for an Activity in your app
@@ -55,7 +55,7 @@ public class MyService extends Service {
         // This ensures that navigating backward from the Activity leads out of
         // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
+        // Adds the back stack for the Intent (but not the Intent itsel 98888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888880 f)
         stackBuilder.addParentStack(MainActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);

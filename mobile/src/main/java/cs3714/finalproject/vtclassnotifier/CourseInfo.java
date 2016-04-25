@@ -12,8 +12,11 @@ public class CourseInfo {
     ClassType classType;
     boolean hasAdditionalTime = false;
     String addDays, addTimes, addLocation;
+    Campus campus;
+    Term term;
+    int year;
 
-    public CourseInfo(ArrayList<String> arrayList)
+    public CourseInfo(ArrayList<String> arrayList, Term t, int y, Campus c)
     {
         if(arrayList.size() == 13)
         {
@@ -40,6 +43,35 @@ public class CourseInfo {
             days = arrayList.get(8).trim();
             times = arrayList.get(9).trim() + " - " + arrayList.get(10).trim();
             location = arrayList.get(11).trim();
+            term = t;
+            year = y;
+            campus = c;
+        }
+        else if(arrayList.size() == 12)
+        {
+            crn = Integer.parseInt(arrayList.get(0).substring(0, arrayList.get(0).length() - 1));
+            String [] temp = arrayList.get(1).trim().split("-");
+            if(temp.length == 2)
+            {
+                department = temp[0];
+                courseNumber = Integer.parseInt(temp[1]);
+            }
+            title = arrayList.get(2);
+            classType = ClassType.toEnum(arrayList.get(3).trim());
+            creditHours = Integer.parseInt(arrayList.get(4).trim());
+            if(arrayList.get(5).contains("Full"))
+            {
+                openSeats = Integer.parseInt(arrayList.get(5).trim().replace("Full ", ""));
+            }
+            else
+            {
+                openSeats = Integer.parseInt(arrayList.get(5).trim());
+            }
+            capacity = Integer.parseInt(arrayList.get(6).trim());
+            instructor = arrayList.get(7).trim();
+            term = t;
+            year = y;
+            campus = c;
         }
     }
     public void addTimes(String aDays, String bTime, String eTime, String aLocation)
@@ -52,12 +84,23 @@ public class CourseInfo {
     }
     public String toString()
     {
-        String str = crn + " | " + department + courseNumber + " | " + title + " | " + classType.toString() + " | " + creditHours+ " | " + openSeats+ " | " + capacity+ " | " + instructor+ " | " +days + " | " + times+ " | " +location;
-        if(hasAdditionalTime)
-        {
-            str += "\nAdditional Times: " + addDays + " | " + addTimes + " | " + addLocation;
+        if(classType != ClassType.ONLINE_COURSE) {
+            String str = crn + " | " + department + courseNumber + " | " + title + " | " + classType.toString() + " | " + creditHours + " | " + openSeats + " | " + capacity + " | " + instructor + " | " + days + " | " + times + " | " + location;
+            str += "\n" + term.name() + year + " | " + campus.name();
+            if (hasAdditionalTime) {
+                str += "\nAdditional Times: " + addDays + " | " + addTimes + " | " + addLocation;
+            }
+            return str;
         }
-        return str;
+        else
+        {
+            String str = crn + " | " + department + courseNumber + " | " + title + " | " + classType.toString() + " | " + creditHours + " | " + openSeats + " | " + capacity + " | " + instructor;
+            str += "\n" + term.name() + year + " | " + campus.name();
+            if (hasAdditionalTime) {
+                str += "\nAdditional Times: " + addDays + " | " + addTimes + " | " + addLocation;
+            }
+            return str;
+        }
     }
 
     public int getCrn() {

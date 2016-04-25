@@ -105,7 +105,7 @@ public class TestActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 Query query = new Query();
-
+                query.setCampus(2);
                 requestHandler.sendPostForClasses(query);
             }
             catch (Exception e)
