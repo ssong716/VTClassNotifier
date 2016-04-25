@@ -40,6 +40,32 @@ public enum Campus {
         return -1;
     };
 
+    public String toString()
+    {
+        switch(this)
+        {
+            case BLACKSBURG:
+                return "Blacksburg";
+            case VIRTUAL:
+                return "Virtual";
+            case WESTERN:
+                return "Western";
+            case VALLEY:
+                return "Valley";
+            case NATIONAL_CAPITAL_REGION:
+                return "National";
+            case CENTRAL:
+                return "Central";
+            case HAMPTON_ROADS_CENTER:
+                return "Hampton";
+            case CAPITAL:
+                return "Capital";
+            case OTHER:
+                return "Other";
+        }
+        return "";
+    }
+
     public static Campus toEnum(String s)
     {
       if(s.contains("Blacksburg"))

@@ -1,5 +1,8 @@
 package cs3714.finalproject.vtclassnotifier;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -11,15 +14,65 @@ public class CourseInfo {
     String department, title, instructor, days, times, location;
     ClassType classType;
     boolean hasAdditionalTime = false;
-    String addDays, addTimes, addLocation;
+    String addDays = "", addTimes = "", addLocation = "";
     Campus campus;
     Term term;
     int year;
+
+    public ArrayList<String> toArrayList()
+    {
+        ArrayList<String> retVal = new ArrayList<>();
+        retVal.add(String.valueOf(crn));//0
+        retVal.add(String.valueOf(courseNumber));//1
+        retVal.add(String.valueOf(creditHours));//2
+        retVal.add(String.valueOf(openSeats));//3
+        retVal.add(String.valueOf(capacity));//4
+        retVal.add(department);//5
+        retVal.add(title);//6
+        retVal.add(instructor);//7
+        retVal.add(days);//8
+        retVal.add(times);//9
+        retVal.add(location);//10
+        retVal.add(classType.toString());//11
+        retVal.add(String.valueOf(hasAdditionalTime));//12
+        retVal.add(addDays);//13
+        retVal.add(addTimes);//14
+        retVal.add(addLocation);//15
+        retVal.add(campus.toString());//16
+        retVal.add(term.toString());//17
+        retVal.add(String.valueOf(year));//18
+        return retVal;
+    }
+    public CourseInfo(ArrayList<String> arrayList)
+    {
+        if(arrayList.size() == 19) {
+            crn = Integer.parseInt(arrayList.get(0));
+            courseNumber = Integer.parseInt(arrayList.get(1));
+            creditHours = Integer.parseInt(arrayList.get(2));
+            openSeats = Integer.parseInt(arrayList.get(3));
+            capacity = Integer.parseInt(arrayList.get(4));
+            department = arrayList.get(5);
+            title = arrayList.get(6);
+            instructor = arrayList.get(7);
+            days = arrayList.get(8);
+            times = arrayList.get(9);
+            location = arrayList.get(10);
+            classType = ClassType.toEnum(arrayList.get(11));
+            hasAdditionalTime = Boolean.parseBoolean(arrayList.get(12));
+            addDays = arrayList.get(13);
+            addTimes = arrayList.get(14);
+            addLocation = arrayList.get(15);
+            campus = Campus.toEnum(arrayList.get(16));
+            term = Term.toEnum(arrayList.get(17));
+            year = Integer.parseInt(arrayList.get(18));
+        }
+    }
 
     public CourseInfo(ArrayList<String> arrayList, Term t, int y, Campus c)
     {
         if(arrayList.size() == 13)
         {
+            //regular class
             crn = Integer.parseInt(arrayList.get(0).substring(0, arrayList.get(0).length() - 1));
             String [] temp = arrayList.get(1).trim().split("-");
             if(temp.length == 2)
@@ -49,6 +102,7 @@ public class CourseInfo {
         }
         else if(arrayList.size() == 12)
         {
+            //online class
             crn = Integer.parseInt(arrayList.get(0).substring(0, arrayList.get(0).length() - 1));
             String [] temp = arrayList.get(1).trim().split("-");
             if(temp.length == 2)
@@ -69,6 +123,9 @@ public class CourseInfo {
             }
             capacity = Integer.parseInt(arrayList.get(6).trim());
             instructor = arrayList.get(7).trim();
+            days = "";
+            times = "";
+            location = "";
             term = t;
             year = y;
             campus = c;
@@ -83,6 +140,11 @@ public class CourseInfo {
 
     }
     public String toString()
+    {
+        return "(" + crn +") "+department + "-" + courseNumber +  days + " " +times;
+    }
+
+    public String toDebugString()
     {
         if(classType != ClassType.ONLINE_COURSE) {
             String str = crn + " | " + department + courseNumber + " | " + title + " | " + classType.toString() + " | " + creditHours + " | " + openSeats + " | " + capacity + " | " + instructor + " | " + days + " | " + times + " | " + location;
@@ -222,4 +284,5 @@ public class CourseInfo {
     public void setAddLocation(String addLocation) {
         this.addLocation = addLocation;
     }
+
 }

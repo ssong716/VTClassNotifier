@@ -1,6 +1,5 @@
 package cs3714.finalproject.vtclassnotifier;
 
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.DataNode;
@@ -38,31 +37,11 @@ public class HtmlParser {
             {
 
                 String [] split = e.ownText().split("-");
-                Log.e("HTMLParser-parseTable()", split.length + "");
-                for(String s : split)
-                {
-                    Log.e("HTMLParser-parseTable()",s.trim());
-                }
                 if(split.length == 2)
                 {
                     campus = Campus.toEnum(split[0]);
                     //fall or spring
-                    if(split[1].contains("Fall"))
-                    {
-                        term = Term.FALL;
-                    }
-                    else if(split[1].contains("Spring"))
-                    {
-                        term = Term.SPRING;
-                    }
-                    else if(split[1].contains("Summer II"))
-                    {
-                        term = Term.SUMMER_II;
-                    }
-                    else
-                    {
-                        term = Term.SUMMER_I;
-                    }
+                    term = Term.toEnum(split[1]);
                     String []t;
                     switch (term)
                     {
@@ -87,10 +66,8 @@ public class HtmlParser {
 //                for (int i = 0; i < t.size(); i++) {
 //                    str += t.get(i).text() + "\n";
 //                }
-                    Log.e("ParseTable", t.children().size() + "");
                     if (t.children().size() == 13) {
                         for (Element child : t.children()) {
-//                            Log.e("child text", child.text());
                             temp.add(child.text().trim());
 //                        retVal += child.text() + " | ";
                         }
@@ -105,7 +82,6 @@ public class HtmlParser {
                     {
                         //online class
                         for (Element child : t.children()) {
-                            Log.e("Online course", child.text());
                             temp.add(child.text().trim());
 //                        retVal += child.text() + " | ";
                         }

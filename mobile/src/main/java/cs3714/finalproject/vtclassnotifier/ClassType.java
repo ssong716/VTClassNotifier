@@ -15,13 +15,15 @@ public enum ClassType {
         switch(this)
         {
             case LECTURE:
-                return "Lecture";
+                return "L";
+            case LAB:
+                return "B";
             case INDEPENDENT_STUDY:
-                return "Independent Study";
+                return "I";
             case RECITATION:
-                return "Recitation";
+                return "C";
             case RESEARCH:
-                return "Research";
+                return "R";
             case ONLINE_COURSE:
                 return "Online Course";
             default:

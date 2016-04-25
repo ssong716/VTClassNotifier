@@ -1,5 +1,6 @@
 package cs3714.finalproject.vtclassnotifier;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -51,8 +52,8 @@ public class TestActivity extends AppCompatActivity {
         url = "https://banweb.banner.vt.edu/ssomanager_prod/c/SSB";
         webView.loadUrl(url);
         setContentView(webView);
-        requestHandler = new HttpRequestHandler();
-        htmlGetter = new HTMLGetter();
+//        requestHandler = new HttpRequestHandler();
+//        htmlGetter = new HTMLGetter();
 //        text = (TextView) findViewById(R.id.textview);
 //        if(text != null) {
 //            text.setText("Sample");
@@ -66,14 +67,19 @@ public class TestActivity extends AppCompatActivity {
     }
     public void setCookie(String cookies)
     {
-
-        setContentView(R.layout.test_activity);
-        text = (TextView) findViewById(R.id.textview);
-        text.setMovementMethod(new ScrollingMovementMethod());
-        text.setText(cookies);
-
-        requestHandler.setCookie(cookies);
-        htmlGetter.execute(cookies);
+        Intent i = new Intent();
+        i.putExtra("COOKIE", cookies);
+        setResult(RESULT_OK, i);
+        finish();
+//        setContentView(R.layout.test_activity);
+//        text = (TextView) findViewById(R.id.textview);
+//        text.setMovementMethod(new ScrollingMovementMethod());
+//        text.setText(cookies);
+//
+//        requestHandler.setCookie(cookies);
+//        Query query = new Query();
+//        query.setCampus(2);
+//        htmlGetter.execute(query);
 
 //        try {
 //            requestHandler.setCookie(cookies);
@@ -98,15 +104,14 @@ public class TestActivity extends AppCompatActivity {
 //        t.show();
     }
 
-    private class HTMLGetter extends AsyncTask<String,  Void, String>
+    private class HTMLGetter extends AsyncTask<Query,  Void, String>
     {
 //        private String LOGIN_URL = "https://login.vt.edu";
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Query... params) {
             try {
-                Query query = new Query();
-                query.setCampus(2);
-                requestHandler.sendPostForClasses(query);
+
+                requestHandler.sendPostForClasses(params[0]);
             }
             catch (Exception e)
             {

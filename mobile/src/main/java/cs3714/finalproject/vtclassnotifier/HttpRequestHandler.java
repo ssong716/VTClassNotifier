@@ -30,7 +30,7 @@ public class HttpRequestHandler {
     private final String ACCEPT_LANGUAGE = "en-US,en;q=0.8,ko;q=0.6";
     private final String COOKIES_HEADER = "Set-Cookie";
     private List<String> cookies;
-    private String cookie;
+    private String cookie = null;
 
     //URLs to make requests to
     String timeTableUrl = "https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_ProcRequest";
@@ -79,6 +79,10 @@ public class HttpRequestHandler {
      */
     // HTTP POST request
     public void sendPostForClasses(Query query) throws Exception {
+        if(cookie == null)
+        {
+            throw new Exception("Set the cookie");
+        }
         String url = timeTableUrl;
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
