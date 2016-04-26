@@ -26,6 +26,7 @@ public class SearchClasses extends AppCompatActivity implements View.OnClickList
     EditText courseNumber;
     ListView results;
     String[] subjectArray;
+
     String [] termArray;
     HttpRequestHandler requestHandler;
     ArrayAdapter<CourseInfo> listAdapter;
@@ -48,8 +49,7 @@ public class SearchClasses extends AppCompatActivity implements View.OnClickList
                 "Summer I 2016",
                 "Summer II 2016",
                 "Fall 2016",
-                "Winter 2016",
-                "Spring 2017"
+                "Spring 2016"
         };
 
         subjectArray = new String[]{
@@ -130,7 +130,22 @@ public class SearchClasses extends AppCompatActivity implements View.OnClickList
         {
             //start query
             Query query = new Query();
-           String s =  spinnerSubj.getSelectedItem().toString();
+            switch(spinnerTerm.getSelectedItem().toString())
+            {
+                case "Summer I 2016":
+                    query.setTermyear(201606);
+                    break;
+                case "Summer II 2016":
+                    query.setTermyear(201607);
+                    break;
+                case "Fall 2016":
+                    query.setTermyear(201609);
+                    break;
+                case "Spring 2016":
+                    query.setTermyear(201601);
+                    break;
+            }
+            String s =  spinnerSubj.getSelectedItem().toString();
             if(s.equalsIgnoreCase("Computer Science"))
             {
                 query.setSubject("CS");
