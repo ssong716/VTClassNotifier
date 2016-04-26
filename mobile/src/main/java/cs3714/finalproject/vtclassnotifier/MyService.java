@@ -89,22 +89,24 @@ public class MyService extends Service {
     }
 
     public void checkOpenAndNotify() {
+        int count = 0;
         Log.d("SUNGHA", "There are " + hashMap.values().size() + " classes to query");
         for(CourseInfo c: hashMap.values()) {
             Log.d("SUNGHA", "Crn " + c.crn + " has " + c.openSeats + " open!");
             if(c.isOpen()) {
                 lastCourseOpen = c;
+                notifyMe("CRN " + c.crn + " is now open", count++, c.term.toInt(c.year));
                 openClasses.incrementAndGet();
             }
         }
-        if(openClasses.get() == 1) {
-            Log.d("SUNGHA", "1 Open class");
-            notifyMe("CRN " + lastCourseOpen.crn + " is now open!");
-        }
-        if(openClasses.get() > 1) {
-            Log.d("SUNGHA", "> 1 open class");
-            notifyMe("There are multiple classes open!");
-        }
+//        if(openClasses.get() == 1) {
+//            Log.d("SUNGHA", "1 Open class");
+//            notifyMe("CRN " + lastCourseOpen.crn + " is now open!");
+//        }
+//        if(openClasses.get() > 1) {
+//            Log.d("SUNGHA", "> 1 open class");
+//            notifyMe("There are multiple classes open!");
+//        }
         hashMap.clear();
         openClasses.set(0);
         executedTasksCount.set(0);
@@ -159,14 +161,18 @@ public class MyService extends Service {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
     //Sends a notification to the phone
-    private void notifyMe(String s) {
+    private void notifyMe(String s, int mId, int term) {
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_cast_dark)
                         .setContentTitle("VTClassNotifier")
                         .setContentText(s);
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, TestActivity.class);
+        //Send this back to TestActivity
+        //Include cookie, url
+        resultIntent.putExtra("Cookie", cookie);
+        resultIntent.putExtra("Term", term);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -187,6 +193,7 @@ public class MyService extends Service {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
         mNotificationManager.notify(mId, mBuilder.build());
+        //mId can be different to push multiple
     }
 
 
