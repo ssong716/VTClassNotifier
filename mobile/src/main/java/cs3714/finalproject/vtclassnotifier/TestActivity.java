@@ -50,6 +50,20 @@ public class TestActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
 //        webView.addJavascriptInterface(new JavaScriptInterface(this), "HTMLOUT");
         url = "https://banweb.banner.vt.edu/ssomanager_prod/c/SSB";
+        Intent i = getIntent();
+        if(i != null)
+        {
+            int temp = i.getIntExtra("Term", -1);
+            if(temp != -1)
+            {
+                url = "https://banweb.banner.vt.edu/ssb/prod/bwskfreg.P_AddDropCrse?term_in=" + temp;
+            }
+            String s = i.getStringExtra("Cookie");
+            if(s != null && !s.equalsIgnoreCase(""))
+            {
+                CookieManager.getInstance().setCookie(url, s);
+            }
+        }
         webView.loadUrl(url);
         setContentView(webView);
 //        requestHandler = new HttpRequestHandler();

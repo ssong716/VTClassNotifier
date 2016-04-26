@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 temp.setSubject(c.getDepartment());
                 temp.setCrn(c.getCrn());
 //                Toast.makeText(this, c.toString() + " added to query list", Toast.LENGTH_LONG).show();
-                makeToast("CRN " + c.getCrn() + "added to query list");
+                makeToast("CRN " + c.getCrn() + " added to query list");
                 hashMap.put(c.getCrn(), c);
 //                queries.add(temp);
             }
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(h.values().size() == 1)
                 {
                     for(CourseInfo c : h.values()) {
-                        makeToast("CRN " + c.getCrn() + "added to query list");
+                        makeToast("CRN " + c.getCrn() + " added to query list");
                         hashMap.put(c.getCrn(), c);
                     }
                 }
