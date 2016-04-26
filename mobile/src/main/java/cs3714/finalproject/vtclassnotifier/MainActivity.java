@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button submit;
     Button classCart;
     Button searchClasses;
+    Button startService;
     String cookie;
     MyService myService;
     HashMap<Integer, CourseInfo> hashMap;
@@ -45,9 +46,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         submit = (Button) findViewById(R.id.submitButton);
         classCart = (Button) findViewById(R.id.cart);
         searchClasses = (Button) findViewById(R.id.searchClasses);
+        startService = (Button) findViewById(R.id.startService);
         submit.setOnClickListener(this);
         classCart.setOnClickListener(this);
         searchClasses.setOnClickListener(this);
+        startService.setOnClickListener(this);
         crn = (EditText) findViewById(R.id.crnNumber);
         serviceIntent = new Intent(this, MyService.class);
 //        queries = new ArrayList<>();
@@ -141,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CourseInfo c = new CourseInfo(data.getStringArrayListExtra("COURSE"));
                 temp.setSubject(c.getDepartment());
                 temp.setCrn(c.getCrn());
-                Toast.makeText(this, c.toString() + " added to query list", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, c.toString() + " added to query list", Toast.LENGTH_LONG).show();
+                makeToast("CRN " + c.getCrn() + "added to query list");
                 hashMap.put(c.getCrn(), c);
 //                queries.add(temp);
             }
@@ -167,24 +171,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == submit.getId()) {
             //TODO Check for values some possible error check to remove from the list if it's not valid
             if(crn.getText().toString() == null || crn.getText().toString().equals("")) {
-                Toast.makeText(this, "Please Enter a crn", Toast.LENGTH_SHORT).show();
+                makeToast("Please enter a CRN");
                 return;
             }
             int c = Integer.parseInt(crn.getText().toString());
             query.setCrn(c);
+            HTMLGetter getter = new HTMLGetter();
+            getter.execute(query);
 
-            //Start the Intent
-//            serviceIntent = new Intent(this, MyService.class);
-            ArrayList<Integer> crnList = new ArrayList<Integer>(hashMap.keySet());
-            serviceIntent.putIntegerArrayListExtra(CLASS_QUERY_MESSAGE, crnList);
-            serviceIntent.putExtra(QUERY_COOKIE, cookie);
 
-            if(!isInitialized) {
-                startService(serviceIntent);
-                isInitialized = true;
-            }
-//            HTMLGetter getter = new HTMLGetter();
-//            getter.execute(query);
 
         } else if (v.getId() == classCart.getId()) {
             Intent classCart = new Intent(this, ClassCartActivity.class);
@@ -200,7 +195,95 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent searchClass = new Intent(this, SearchClasses.class);
             searchClass.putExtra("COOKIE", cookie);
             startActivityForResult(searchClass, SEARCH_CLASSES);
+        }
+        else if(v.getId() == startService.getId())
+        {
+            //Start the Intent
+//            serviceIntent = new Intent(this, MyService.class);
+//            ArrayList<String> crnList = new ArrayList<String>();
+            HashMap<Integer, ArrayList<String>> h = new HashMap<>();
+            for(CourseInfo c : hashMap.values())
+            {
+                h.put(c.getCrn(), c.toArrayList());
+            }
+            serviceIntent.putExtra(CLASS_QUERY_MESSAGE, h);
+            serviceIntent.putExtra(QUERY_COOKIE, cookie);
 
+            if(!isInitialized) {
+                startService(serviceIntent);
+                startService.setText("Stop Service");
+                isInitialized = true;
+                makeToast("Service Started");
+            }
+            else
+            {
+                stopService(serviceIntent);
+                startService.setText("Start Service");
+                isInitialized = false;
+                makeToast("Service Stopped");
+            }
         }
     }
+
+    private void makeToast(String s)
+    {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    private class HTMLGetter extends AsyncTask<Query,  Void, String>
+    {
+        //        private String LOGIN_URL = "https://login.vt.edu";
+        @Override
+        protected String doInBackground(Query... params) {
+            try {
+
+                requestHandler.sendPostForClasses(params[0]);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return "Exception caught: " + e.toString();
+            }
+            return requestHandler.response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s.contains("Exception caught: "))
+            {
+                Log.e("SearchClasses doInBG", s);
+                return;
+            }
+            ArrayList<CourseInfo> arrayList = new ArrayList<>();
+            HtmlParser parser = new HtmlParser();
+            try {
+                HashMap<Integer, CourseInfo> h = parser.parseTable(s);
+                if(h.values().size() == 1)
+                {
+                    for(CourseInfo c : h.values()) {
+                        makeToast("CRN " + c.getCrn() + "added to query list");
+                        hashMap.put(c.getCrn(), c);
+                    }
+                }
+                else
+                {
+                    makeToast("Your search returned the wrong number of results");
+                }
+                super.onPostExecute(s);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                Log.e("SearchClasses PostExec",  e.getMessage());
+//                arrayList.add("Error parsing table: "+ e.getMessage());
+//                populateListView(arrayList);
+                super.onPostExecute(s);
+                return;
+            }
+
+        }
+
+
+    }
+
 }

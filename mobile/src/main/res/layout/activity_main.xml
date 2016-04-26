@@ -75,6 +75,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/startService"
+            android:text="Start Service"
+            android:layout_weight="1" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/searchClasses"
             android:text="Search Classes"
             android:layout_weight="1"/>

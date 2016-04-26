@@ -203,6 +203,10 @@ public class CourseInfo implements Serializable{
         retVal.setCrn(crn);
         return retVal;
     }
+    public boolean isOpen()
+    {
+        return openSeats > 0;
+    }
 
     public int getCrn() {
         return crn;

@@ -26,7 +26,7 @@ public class MyService extends Service {
     int rerunTimer = 60000;
     int mId = 0;
     HttpRequestHandler requestHandler;
-    ArrayList<Integer> crnList;
+    ArrayList<Query> queryList;
     Query q;
     String cookie;
     ConcurrentHashMap<Integer, CourseInfo> hashMap;
@@ -41,8 +41,14 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        crnList = intent.getIntegerArrayListExtra(MainActivity.CLASS_QUERY_MESSAGE);
-        Log.d("SUNGHA", "RECEIVED " + crnList.size() + " classes");
+        HashMap<Integer, ArrayList<String>> h = (HashMap)intent.getSerializableExtra(MainActivity.CLASS_QUERY_MESSAGE);
+        queryList = new ArrayList<>();
+        for(ArrayList<String> a : h.values())
+        {
+            CourseInfo c = new CourseInfo(a);
+            queryList.add(c.toQuery());
+        }
+        Log.d("SUNGHA", "RECEIVED " + queryList.size() + " classes");
         cookie = intent.getStringExtra(MainActivity.QUERY_COOKIE);
         openClasses = new AtomicInteger(0);
         executedTasksCount = new AtomicInteger(0);
@@ -56,8 +62,8 @@ public class MyService extends Service {
         myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                for(int i = 0; i < crnList.size(); i++) {
-                    if(crnList.size() > 1) {
+                for(int i = 0; i < queryList.size(); i++) {
+                    if(queryList.size() > 1) {
                         startTask(i, true);
                     }
                     else startTask(i, false);
@@ -84,10 +90,9 @@ public class MyService extends Service {
 
     public void checkOpenAndNotify() {
         Log.d("SUNGHA", "There are " + hashMap.values().size() + " classes to query");
-        for(Map.Entry<Integer, CourseInfo> entry : hashMap.entrySet()) {
-            CourseInfo c = entry.getValue();
+        for(CourseInfo c: hashMap.values()) {
             Log.d("SUNGHA", "Crn " + c.crn + " has " + c.openSeats + " open!");
-            if(c.openSeats > 0) {
+            if(c.isOpen()) {
                 lastCourseOpen = c;
                 openClasses.incrementAndGet();
             }
@@ -120,17 +125,17 @@ public class MyService extends Service {
             {
                 for(Map.Entry<Integer, CourseInfo> entry : hashMap.entrySet()) {
                     CourseInfo c = entry.getValue();
-                    makeToast(c.toString() + " added to query list");
+//                    makeToast(c.toString() + " added to query list");
                     this.hashMap.put(c.crn, c);
                 }
             }
             else if(hashMap.values().size() == 0)
             {
-                makeToast("No Results To Show");
+//                makeToast("No Results To Show");
             }
             else
             {
-                makeToast("Too many results, use search for classes");
+//                makeToast("Too many results, use search for classes");
             }
         }
         catch(Exception e)
@@ -201,15 +206,15 @@ public class MyService extends Service {
             Log.d("SUNGHA", "Executed " + taskExecutionNumber + " task(s)");
             try {
 //                for(int i = 0; i < crnList.size(); i++) {
-                    q.setCrn(crnList.get(taskExecutionNumber));
+//                    q.setCrn(crnList.get(taskExecutionNumber));
                     try {
-                        requestHandler.sendPostForClasses(q);
+                        requestHandler.sendPostForClasses(queryList.get(taskExecutionNumber));
 
                     } catch (Exception e) {
                         Log.d("SUNGHA", "EXCEPTION");
                         e.printStackTrace();
                     }
-                    Log.d("SUNGHA", "Query for crn " + crnList.get(taskExecutionNumber));
+                    Log.d("SUNGHA", "Query for crn " + queryList.get(taskExecutionNumber).getCrn());
 //                }
 
 //                requestHandler.sendPostForClasses
@@ -225,7 +230,7 @@ public class MyService extends Service {
         @Override
         protected void onPostExecute(String s) {
             checkClasses(s);
-            if(finishedCount.incrementAndGet() >= crnList.size()) {
+            if(finishedCount.incrementAndGet() >= queryList.size()) {
                 checkOpenAndNotify();
             }
         }
