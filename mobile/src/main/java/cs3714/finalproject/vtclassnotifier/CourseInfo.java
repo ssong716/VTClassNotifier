@@ -171,7 +171,7 @@ public class CourseInfo implements Serializable{
     }
     public String toString()
     {
-        return "(" + crn +") "+department + "-" + courseNumber +  days + " " +times;
+        return  crn +"-(" +classType.toPrettyString() + ") "+ instructor+" "+  days + " " +times;
     }
 
     public String toDebugString()
@@ -193,6 +193,15 @@ public class CourseInfo implements Serializable{
             }
             return str;
         }
+    }
+
+    public Query toQuery()
+    {
+        Query retVal = new Query();
+        retVal.setCampus(campus.toInt());
+        retVal.setTermyear(term.toInt(year));
+        retVal.setCrn(crn);
+        return retVal;
     }
 
     public int getCrn() {

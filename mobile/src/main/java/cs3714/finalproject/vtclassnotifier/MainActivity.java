@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == submit.getId()) {
             //TODO Check for values some possible error check to remove from the list if it's not valid
-            if(crn.getText() == null || crn.getText().equals("")) {
+            if(crn.getText().toString() == null || crn.getText().toString().equals("")) {
                 Toast.makeText(this, "Please Enter a crn", Toast.LENGTH_SHORT).show();
                 return;
             }

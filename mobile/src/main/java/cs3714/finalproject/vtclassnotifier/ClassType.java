@@ -58,6 +58,27 @@ public enum ClassType {
             return ONLINE_COURSE;
         }
     };
+
+    public String toPrettyString()
+    {
+        switch(this)
+        {
+            case LECTURE:
+                return "LEC";
+            case LAB:
+                return "LAB";
+            case INDEPENDENT_STUDY:
+                return "IS";
+            case RECITATION:
+                return "REC";
+            case RESEARCH:
+                return "RES";
+            case ONLINE_COURSE:
+                return "ONL";
+            default:
+                return "";
+        }
+    }
 };
 
 
