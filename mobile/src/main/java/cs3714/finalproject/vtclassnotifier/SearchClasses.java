@@ -20,12 +20,13 @@ import java.util.List;
 
 public class SearchClasses extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    Spinner spinnerTerm;
     Spinner spinnerSubj;
     Button search;
     EditText courseNumber;
     ListView results;
     String[] subjectArray;
-    String [] classArray;
+    String [] termArray;
     HttpRequestHandler requestHandler;
     ArrayAdapter<CourseInfo> listAdapter;
     String cookie;
@@ -40,7 +41,17 @@ public class SearchClasses extends AppCompatActivity implements View.OnClickList
         courseNumber = (EditText) findViewById(R.id.editText);
         search = (Button) findViewById(R.id.sendQuery);
         results = (ListView) findViewById(R.id.results);
+        spinnerTerm = (Spinner) findViewById(R.id.spinnerTerm);
         search.setOnClickListener(this);
+
+        termArray = new String[]{
+                "Summer I 2016",
+                "Summer II 2016",
+                "Fall 2016",
+                "Winter 2016",
+                "Spring 2017"
+        };
+
         subjectArray = new String[]{
                 "Computer Science",
                 "Mechanical Engineering",
@@ -53,21 +64,27 @@ public class SearchClasses extends AppCompatActivity implements View.OnClickList
                 android.R.layout.simple_spinner_item, subjectArray);
         spinnerSubj.setAdapter(adapter);
 
-//        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_spinner_item, classArray);
-//        spinnerClass.setAdapter(adapter2);
-//        ArrayList <String> temp = new ArrayList<>();
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, termArray);
+        spinnerTerm.setAdapter(adapter3);
 //        temp.add("Search for Classes");
         listAdapter = new ArrayAdapter<CourseInfo>(this, android.R.layout.simple_list_item_1);
         results.setAdapter(listAdapter);
         requestHandler = new HttpRequestHandler();
-        if(savedInstanceState != null) {
-            cookie = savedInstanceState.getString("COOKIE");
+        Intent i = getIntent();
+        if(i != null) {
+            cookie = i.getStringExtra("COOKIE");
+
         }
         if(cookie == null)
         {
             //launch webview to get cookie
             getCookie();
+        }
+        else
+        {
+            requestHandler.setCookie(cookie);
         }
         results.setOnItemClickListener(this);
     }

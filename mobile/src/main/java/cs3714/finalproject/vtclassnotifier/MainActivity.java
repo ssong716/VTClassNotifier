@@ -6,17 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.EditText;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    EditText crn;
     Button submit;
     Button classCart;
     Button searchClasses;
-    Button options;
     String cookie;
-    ArrayList<Query> queries;
+    HashMap<Integer, CourseInfo> hashMap;
 
 
     @Override
@@ -26,12 +29,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         submit = (Button) findViewById(R.id.submitButton);
         classCart = (Button) findViewById(R.id.cart);
         searchClasses = (Button) findViewById(R.id.searchClasses);
-        options = (Button) findViewById(R.id.options);
         submit.setOnClickListener(this);
         classCart.setOnClickListener(this);
         searchClasses.setOnClickListener(this);
-        options.setOnClickListener(this);
-        queries = new ArrayList<>();
+        crn = (EditText) findViewById(R.id.crnNumber);
+//        queries = new ArrayList<>();
+        hashMap = new HashMap<>();
         if(savedInstanceState != null) {
             cookie = savedInstanceState.getString("COOKIE");
         }
@@ -66,27 +69,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 temp.setSubject(c.getDepartment());
                 temp.setCrn(c.getCrn());
                 Toast.makeText(this, c.toString() + " added to query list", Toast.LENGTH_LONG).show();
-                queries.add(temp);
+                hashMap.put(c.getCrn(), c);
+//                queries.add(temp);
+            }
+        }
+        else if(requestCode == CLASS_CART)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                //there was an edit made to the hash map
+                Serializable temp = data.getSerializableExtra("CART");
+                if(temp != null && temp.getClass() == HashMap.class)
+                {
+                    hashMap = (HashMap) temp;
+                }
             }
         }
     }
 
     static final int SEARCH_CLASSES = 2;  // The request code
+    static final int CLASS_CART = 3;
     @Override
     public void onClick(View v) {
         if (v.getId() == submit.getId()) {
 
+
         } else if (v.getId() == classCart.getId()) {
+            Intent classCart = new Intent(this, ClassCartActivity.class);
+            HashMap<Integer, ArrayList<String>> h = new HashMap<>();
+            for(CourseInfo c: hashMap.values())
+            {
+                h.put(c.getCrn(), c.toArrayList());
+            }
+            classCart.putExtra("CART", h);
+            startActivityForResult(classCart, CLASS_CART);
 
         } else if (v.getId() == searchClasses.getId()) {
             Intent searchClass = new Intent(this, SearchClasses.class);
             searchClass.putExtra("COOKIE", cookie);
             startActivityForResult(searchClass, SEARCH_CLASSES);
 
-        } else if (v.getId() == options.getId()) {
-
         }
-
 
     }
 }

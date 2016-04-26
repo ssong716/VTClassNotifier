@@ -9,16 +9,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cs3714.finalproject.vtclassnotifier.SearchClasses">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:text="Subject:"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.8"
+            android:text="Term:"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:id="@+id/spinnerTerm">
+        </Spinner>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.8"
+            android:text="Subject:" />
 
         <Spinner
             android:layout_width="match_parent"
@@ -26,11 +42,12 @@
             android:layout_weight="5.5"
             android:id="@+id/spinnerSubjects">
         </Spinner>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6.5"
-            android:text="Class:"/>
+            android:layout_weight="5.8"
+            android:text="Class:" />
 
         <EditText
             android:layout_width="362dp"

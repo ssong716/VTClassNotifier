@@ -3,13 +3,18 @@ package cs3714.finalproject.vtclassnotifier;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by AJ on 4/22/2016.
  */
-public class CourseInfo {
+public class CourseInfo implements Serializable{
     int crn, courseNumber, creditHours, openSeats, capacity;
     String department, title, instructor, days, times, location;
     ClassType classType;
@@ -18,6 +23,26 @@ public class CourseInfo {
     Campus campus;
     Term term;
     int year;
+
+
+    private void writeObject(ObjectOutputStream oos)
+            throws IOException {
+        // default serialization
+        oos.defaultWriteObject();
+        // write the object
+        List loc = toArrayList();
+        oos.writeObject(loc);
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        // default deserialization
+        ois.defaultReadObject();
+        List loc = (List)ois.readObject(); // Replace with real deserialization
+        readFromList(loc);
+        // ... more code
+
+    }
 
     public ArrayList<String> toArrayList()
     {
@@ -43,7 +68,12 @@ public class CourseInfo {
         retVal.add(String.valueOf(year));//18
         return retVal;
     }
-    public CourseInfo(ArrayList<String> arrayList)
+    public CourseInfo(List<String> arrayList)
+    {
+        readFromList(arrayList);
+    }
+
+    public void readFromList(List<String> arrayList)
     {
         if(arrayList.size() == 19) {
             crn = Integer.parseInt(arrayList.get(0));
