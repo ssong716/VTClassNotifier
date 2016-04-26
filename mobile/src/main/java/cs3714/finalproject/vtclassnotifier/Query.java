@@ -6,7 +6,7 @@ package cs3714.finalproject.vtclassnotifier;
 public class Query {
     int campus = 0; //default is blacksburg
     int termyear = 201609; //default is fall 2016
-    String subject = "CS"; //default is cs
+    String subject = "%"; //default is cs
     String courseNum = "";
     String crn = "";
     //Complete the request paremeters from the fields above
