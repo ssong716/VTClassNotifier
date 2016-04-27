@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        queries = new ArrayList<>();
         hashMap = new HashMap<>();
         requestHandler = new HttpRequestHandler();
+        query = new Query();
+        query.setSubject("%");
         cookie = null;
         if(savedInstanceState != null) {
             isInitialized = savedInstanceState.getBoolean(INITIALIZE_STATE);
@@ -69,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else {
             requestHandler.setCookie(cookie);
         }
-        query = new Query();
-        query.setSubject("%");
-
-
     }
 
     @Override

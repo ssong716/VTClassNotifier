@@ -21,6 +21,7 @@ public class WebHelper extends WebViewClient {
         super.onPageFinished(view, url);
         if (url.contains("https://banweb.banner.vt.edu/ssb/prod/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")) {
             view.loadUrl("https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_DispRequest");
+            testActivity.setText("");
 //            String cookies = CookieManager.getInstance().getCookie(url);
 //            testActivity.setCookie(cookies);
 
@@ -44,11 +45,6 @@ array[i].click();}
         }
         else if (url.contains("https://banweb.banner.vt.edu/ssb/prod/hzskstat.P_DispRegStatPage"))
         {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             String js = "javascript: var array = document.querySelectorAll(\"table.dataentrytable td.dedefault a\");\n" +
                     "var i = 0;\n" +
                     "for(; i < array.length; i++)\n" +
@@ -62,6 +58,7 @@ array[i].click();}
         }
         else if(url.contains("https://banweb.banner.vt.edu/ssb/prod/bwskfreg.P_AddDropCrse?term_in="))
         {
+            testActivity.setContentView(view);
             String js = "javascript: document.getElementById(\"crn_id1\").value = "+ String.valueOf(testActivity.crn)+";";
             view.loadUrl(js);
         }

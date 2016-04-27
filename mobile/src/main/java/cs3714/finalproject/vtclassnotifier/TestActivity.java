@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -53,9 +54,10 @@ public class TestActivity extends AppCompatActivity {
 //        webView.addJavascriptInterface(new JavaScriptInterface(this), "HTMLOUT");
         url = "https://banweb.banner.vt.edu/ssomanager_prod/c/SSB";
         Intent i = getIntent();
+        int temp = -1;
         if(i != null)
         {
-            int temp = i.getIntExtra("Term", -1);
+            temp = i.getIntExtra("Term", -1);
             if(temp != -1)
             {
                 term = temp;
@@ -80,7 +82,9 @@ public class TestActivity extends AppCompatActivity {
         }
         Log.d("TESTACTIVITY", url);
         webView.loadUrl(url);
-        setContentView(webView);
+        if(temp == -1) {
+            setContentView(webView);
+        }
 //        requestHandler = new HttpRequestHandler();
 //        htmlGetter = new HTMLGetter();
 //        text = (TextView) findViewById(R.id.textview);
@@ -93,6 +97,11 @@ public class TestActivity extends AppCompatActivity {
 //        text.setText(cookies);
 //        HTMLGetter getter = new HTMLGetter();
 //        getter.execute("https://banweb.banner.vt.edu/ssb/prod/HZSKVTSC.P_ProcRequest");
+    }
+
+    public void setContentView(View v)
+    {
+        super.setContentView(v);
     }
     public void setCookie(String cookies)
     {
