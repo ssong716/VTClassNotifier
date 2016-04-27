@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class TestActivity extends AppCompatActivity {
     WebHelper webHelper;
     HttpRequestHandler requestHandler;
     HTMLGetter htmlGetter;
+    int term, crn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +58,27 @@ public class TestActivity extends AppCompatActivity {
             int temp = i.getIntExtra("Term", -1);
             if(temp != -1)
             {
+                term = temp;
                 url = "https://banweb.banner.vt.edu/ssb/prod/bwskfreg.P_AddDropCrse?term_in=" + temp;
+            }
+            String str = i.getStringExtra("Url");
+            if(str != null && !str.equalsIgnoreCase("") )
+            {
+                url = str;
+                Log.d("TestActivity", str);
             }
             String s = i.getStringExtra("Cookie");
             if(s != null && !s.equalsIgnoreCase(""))
             {
                 CookieManager.getInstance().setCookie(url, s);
             }
+            temp = i.getIntExtra("CRN", -1);
+            if(temp != -1)
+            {
+                crn = temp;
+            }
         }
+        Log.d("TESTACTIVITY", url);
         webView.loadUrl(url);
         setContentView(webView);
 //        requestHandler = new HttpRequestHandler();

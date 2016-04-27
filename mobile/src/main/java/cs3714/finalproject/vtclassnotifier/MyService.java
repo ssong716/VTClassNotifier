@@ -95,7 +95,7 @@ public class MyService extends Service {
             Log.d("SUNGHA", "Crn " + c.crn + " has " + c.openSeats + " open!");
             if(c.isOpen()) {
                 lastCourseOpen = c;
-                notifyMe("CRN " + c.crn + " is now open", count++, c.term.toInt(c.year));
+                notifyMe(c, count++, c.term.toInt(c.year));
                 openClasses.incrementAndGet();
             }
         }
@@ -161,7 +161,8 @@ public class MyService extends Service {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
     //Sends a notification to the phone
-    private void notifyMe(String s, int mId, int term) {
+    private void notifyMe(CourseInfo c, int mId, int term) {
+        String s = "CRN " + c.crn + " is now open";
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_cast_dark)
@@ -173,6 +174,8 @@ public class MyService extends Service {
         //Include cookie, url
         resultIntent.putExtra("Cookie", cookie);
         resultIntent.putExtra("Term", term);
+        resultIntent.putExtra("Url", "https://banweb.banner.vt.edu/ssb/prod/hzskstat.P_DispRegStatPage");
+        resultIntent.putExtra("CRN", c.getCrn());
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
